@@ -13,7 +13,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    const NODE_API = 'http://192.168.152.128:3000';
+    const NODE_API = '<?php echo getenv('NODE_API_URL') ?: 'http://localhost:3000'; ?>';
     let map;
     let userMarker;
 

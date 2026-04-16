@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) && basename($_SERVER['PHP_SELF']) != 'login.php
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>VideoStore ZZZ</title>
-    <link rel="stylesheet" href="/videostore/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
