@@ -1,7 +1,7 @@
 FROM php:8.2-apache
 
 #Instalar extensiones necesarias para conectar con MySQL y otras utilidades
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+RUN docker-php-ext-install pdo_pgsql pgsql
 
 #Habilitar el modulo 'rewrite' de Apache para URLs limpias
 RUN a2enmod rewrite
