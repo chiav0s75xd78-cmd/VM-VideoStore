@@ -1,16 +1,20 @@
+# Usamos Apache con PHP 8.2
 FROM php:8.2-apache
 
-#Instalar extensiones necesarias para conectar con MySQL y otras utilidades
-RUN docker-php-ext-install pdo_pgsql pgsql
+# Instalar dependencias del sistema para PostgreSQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql pgsql \
+    && apt-get clean
 
-#Habilitar el modulo 'rewrite' de Apache para URLs limpias
+# Habilitar mod_rewrite
 RUN a2enmod rewrite
 
-#Se copia todo el codigo al directorio raíz del servidor web en el contenedor
+# Copiar todo el código al servidor
 COPY . /var/www/html/
 
-#Configurar permisos para que Apache pueda leer y escribir archivos
+# Permisos
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
-#Exponer el puerto estandar de Apache
+# Puerto 80
 EXPOSE 80
