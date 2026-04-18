@@ -12,7 +12,7 @@ const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_SECRET    = process.env.PAYPAL_SECRET;
 const PAYPAL_API       = 'https://api-m.sandbox.paypal.com';
 
-// ── Clima ──────────────────────────────────────────────
+//Clima
 app.get('/api/weather', async (req, res) => {
     const { lat, lon } = req.query;
     if (!lat || !lon) {
@@ -30,7 +30,7 @@ app.get('/api/weather', async (req, res) => {
     }
 });
 
-// ── Ubicación por IP ───────────────────────────────────
+//Ubicación por IP
 app.get('/api/ip-location', async (req, res) => {
     let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
     if (clientIp === '::1' || clientIp === '127.0.0.1') clientIp = '8.8.8.8';
@@ -51,7 +51,7 @@ app.get('/api/ip-location', async (req, res) => {
     }
 });
 
-// ── PayPal: obtener token ──────────────────────────────
+//PayPal: obtener token
 async function getPayPalToken() {
     const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_SECRET}`).toString('base64');
     const response = await axios.post(
@@ -62,12 +62,8 @@ async function getPayPalToken() {
     return response.data.access_token;
 }
 
-// ── PayPal: crear orden ────────────────────────────────
-// FIX: ahora acepta `currency` desde el body para que coincida
-// con el currency del SDK de PayPal cargado en el frontend.
-// Si el frontend usa &currency=MXN, el body debe enviar currency:'MXN'
+//PayPal: crear orden
 app.post('/api/create-paypal-order', async (req, res) => {
-    // currency por defecto MXN para coincidir con el SDK del frontend
     const { amount, product, currency = 'MXN' } = req.body;
 
     if (!amount || !product) {
@@ -82,7 +78,7 @@ app.post('/api/create-paypal-order', async (req, res) => {
                 intent: 'CAPTURE',
                 purchase_units: [{
                     amount: {
-                        currency_code: currency,   // ← usa la moneda recibida del frontend
+                        currency_code: currency,
                         value: parseFloat(amount).toFixed(2)
                     },
                     description: product
@@ -97,7 +93,7 @@ app.post('/api/create-paypal-order', async (req, res) => {
     }
 });
 
-// ── PayPal: capturar orden ─────────────────────────────
+//PayPal: capturar orden
 app.post('/api/capture-paypal-order', async (req, res) => {
     const { orderID } = req.body;
     if (!orderID) return res.status(400).json({ error: 'Falta orderID' });
